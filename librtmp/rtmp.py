@@ -6,7 +6,7 @@ from collections import defaultdict
 
 from .aval import AVal
 from .amf import encode_amf, decode_amf, AMFError
-from .compat import bytes
+from .compat import bytes, string_types, integer_types
 from .exceptions import RTMPError
 from .packet import RTMPPacket, PACKET_TYPE_INVOKE, PACKET_SIZE_MEDIUM
 from .stream import RTMPStream
@@ -25,6 +25,7 @@ class RTMP(object):
     :param app: str, Name of application to connect to on the RTMP server.
     :param pageurl: str, URL of the web page in which the media was embedded.
     :param auth: str, Authentication string to be appended to the connect string.
+    :param connect_data: This value will be encoded to AMF and added to the connect packet.
     :param swfhash: str, SHA256 hash of the decompressed SWF file (hexdigest).
     :param swfsize: int, Size of the decompressed SWF file.
     :param swfurl: str, URL of the SWF player for the media.
@@ -47,7 +48,7 @@ class RTMP(object):
     def __init__(self, url, playpath=None, tcurl=None, app=None, pageurl=None,
                  auth=None, swfhash=None, swfsize=None, swfurl=None, swfvfy=None,
                  flashver=None, subscribe=None, token=None, live=None, jtv=None,
-                 conn=None, socks=None, start=None, stop=None, buffer=None,
+                 connect_data=None, socks=None, start=None, stop=None, buffer=None,
                  timeout=None):
         def set_opt(key, val):
             if val is not None:
@@ -96,12 +97,31 @@ class RTMP(object):
         set_opt("buffer", buffer)
         set_opt("timeout", timeout)
 
-        if isinstance(conn, (list, tuple)):
-            for c in conn:
-                set_opt("conn", c)
-        else:
-            set_opt("conn", conn)
+        if isinstance(connect_data, (list, tuple)):
+            for data in connect_data:
+                self._parse_connect_data(data)
+        elif connect_data is not None:
+            self._parse_connect_data(connect_data)
 
+    def _parse_connect_data(self, val):
+        if isinstance(val, bool):
+            self.set_option("conn", "B:{0}".format(int(val)))
+        elif isinstance(val, string_types):
+            self.set_option("conn", "S:{0}".format(val))
+        elif isinstance(val, integer_types):
+            self.set_option("conn", "N:{0}".format(val))
+        elif isinstance(val, type(None)):
+            self.set_option("conn", "Z:")
+        elif isinstance(val, dict):
+            self.set_option("conn", "O:1")
+            for key, value in val.items():
+                if isinstance(value, bool):
+                    self.set_option("conn", "NB:{0}:{1}".format(key, int(value)))
+                elif isinstance(value, string_types):
+                    self.set_option("conn", "NS:{0}:{1}".format(key, value))
+                elif isinstance(value, integer_types):
+                    self.set_option("conn", "NN:{0}:{1}".format(key, value))
+            self.set_option("conn", "O:0")
 
     def set_option(self, key, value):
         """Sets a option for this session.
