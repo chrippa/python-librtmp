@@ -3,16 +3,16 @@ from librtmp_ffi.ffi import ffi
 
 from binascii import unhexlify
 from collections import defaultdict
+from time import time
 
 from .aval import AVal
 from .amf import encode_amf, decode_amf, AMFError
 from .compat import bytes, string_types, integer_types
-from .exceptions import RTMPError
+from .exceptions import RTMPError, RTMPTimeoutError
 from .packet import RTMPPacket, PACKET_TYPE_INVOKE, PACKET_SIZE_MEDIUM
 from .stream import RTMPStream
 from .utils import hash_swf
 
-from time import time
 
 __all__ = ["RTMP", "RTMPCall"]
 
@@ -42,7 +42,7 @@ class RTMP(object):
     :param stop: int, Stop at num seconds into the stream.
     :param buffer: int, Set buffer time to num milliseconds. The default is 30000.
     :param timeout: int, Timeout the session after num seconds without receiving any data
-                    from the server. The default is 120.
+                    from the server. The default is 30.
     """
 
     def __init__(self, url, playpath=None, tcurl=None, app=None, pageurl=None,
@@ -227,7 +227,10 @@ class RTMP(object):
     def read_packet(self):
         """Reads a RTMP packet from the server.
 
-        Returns a :class:`RTMPPacket`. Raises :exc:`IOError` on error.
+        Returns a :class:`RTMPPacket`.
+
+        Raises :exc:`RTMPError` on error.
+        Raises :exc:`RTMPTimeoutError` on timeout.
 
         """
 
@@ -238,7 +241,10 @@ class RTMP(object):
             res = librtmp.RTMP_ReadPacket(self.rtmp, packet)
 
             if res < 1:
-                raise IOError("Failed to read RTMP packet")
+                if librtmp.RTMP_IsTimedout(self.rtmp):
+                    raise RTMPTimeoutError("Timed out while reading packet")
+                else:
+                    raise RTMPError("Failed to read packet")
 
             packet_complete = packet.m_nBytesRead == packet.m_nBodySize
 
@@ -270,13 +276,27 @@ class RTMP(object):
 
     def process_packets(self, transaction_id=None, invoked_method=None,
                         timeout=30):
-        """Waits for packets and process them."""
+        """Wait for packets and process them as needed.
+
+        :param transaction_id: int, Wait until the result of this
+                               transaction ID is recieved.
+        :param invoked_method: int, Wait until this method is invoked
+                               by the server.
+        :param timeout: int, The time to wait for a result from the server.
+                             Note: This the timeout used by this method only,
+                             the connection timeout is still used when reading
+                             packets.
+
+        Raises :exc:`RTMPError` on error.
+        Raises :exc:`RTMPTimeoutError` on timeout.
+
+        """
 
         start = time()
 
         while self.connected and transaction_id not in self._invoke_results:
             if (time() - start) >= timeout:
-                break
+                raise RTMPTimeoutError("Timeout")
 
             packet = self.read_packet()
 
@@ -381,16 +401,18 @@ class RTMPCall(object):
         self.done = False
         self.transaction_id = transaction_id
 
-    def result(self, timeout=None):
+    def result(self, timeout=30):
         """Retrieves the result of the call.
 
         :param timeout: The time to wait for a result from the server.
 
+        Raises :exc:`RTMPTimeoutError` on timeout.
         """
         if self.done:
             return self._result
 
-        result = self.conn.process_packets(self.transaction_id)
+        result = self.conn.process_packets(transaction_id=self.transaction_id,
+                                           timeout=timeout)
 
         self._result = result
         self.done = True
