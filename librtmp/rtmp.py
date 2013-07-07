@@ -40,7 +40,8 @@ class RTMP(object):
     :param socks: str, Use the specified SOCKS4 proxy.
     :param start: int, Start at num seconds into the stream. Not valid for live streams.
     :param stop: int, Stop at num seconds into the stream.
-    :param buffer: int, Set buffer time to num milliseconds. The default is 30000.
+    :param buffer: int, Set buffer time to num milliseconds. This is used to control
+                   rate of data sent by FMS servers, not buffering of data. The default is 30000.
     :param timeout: int, Timeout the session after num seconds without receiving any data
                     from the server. The default is 30.
     """
