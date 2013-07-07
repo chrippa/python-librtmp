@@ -233,6 +233,9 @@ class RTMP(object):
 
         """
 
+        if not isinstance(packet, RTMPPacket):
+            raise ValueError("A RTMPPacket argument is required")
+
         return librtmp.RTMP_SendPacket(self.rtmp, packet.packet,
                                        int(queue))
 
@@ -245,7 +248,8 @@ class RTMP(object):
 
         return librtmp.RTMP_ClientPacket(self.rtmp, packet.packet)
 
-    def process_packets(self, transaction_id=None, timeout=30):
+    def process_packets(self, transaction_id=None, invoked_method=None,
+                        timeout=30):
         """Waits for packets and process them."""
 
         start = time()
@@ -279,6 +283,9 @@ class RTMP(object):
                     for handler in self._invoke_handlers[method]:
                         handler(*args)
 
+                    if method == invoked_method:
+                        return args
+
                 if transaction_id_ == 1.0:
                     self._connect_result = packet
                 else:
@@ -291,7 +298,6 @@ class RTMP(object):
             del self._invoke_results[transaction_id]
 
             return result
-
 
     def call(self, method, *args, **params):
         """Calls a method on the server."""
@@ -362,7 +368,7 @@ class RTMPCall(object):
 
         """
         if self.done:
-            return self.result
+            return self._result
 
         result = self.conn.process_packets(self.transaction_id)
 
