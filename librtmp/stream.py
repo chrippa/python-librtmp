@@ -22,6 +22,7 @@ class RTMPStream(IOBase):
 
         :param size: int, The maximum amount of bytes to read.
 
+        Raises :exc:`IOError` on error.
         """
 
         if not self._buf or len(self._buf) != size:
@@ -40,6 +41,7 @@ class RTMPStream(IOBase):
 
         :param data: bytes, Data to write to stream
 
+        Raises :exc:`IOError` on error.
         """
         if isinstance(data, bytearray):
             data = bytes(data)

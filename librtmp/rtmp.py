@@ -363,13 +363,39 @@ class RTMP(object):
 
         return RTMPCall(self, transaction_id)
 
-    def remote_call(self, func):
-        method = func.__name__
-        self.register_remote_call(method, func)
+    def remote_method(self, method, block=False, **params):
+        """Creates a Python function that will attempt to
+           call a remote method when used.
+
+        :param method: str, Method name on the server to call
+        :param block: bool, Wheter to wait for result or not
+
+        Usage::
+
+          >>> send_usher_token = conn.remote_method("NetStream.Authenticate.UsherToken", block=True)
+          >>> send_usher_token("some token")
+          'Token Accepted'
+        """
+
+        def func(*args):
+            call = self.call(method, *args, **params)
+
+            if block:
+                return call.result()
+
+            return call
+
+        func.__name__ = method
 
         return func
 
-    def register_remote_call(self, method, func):
+    def invoke_handler(self, func):
+        method = func.__name__
+        self.register_invoke_handler(method, func)
+
+        return func
+
+    def register_invoke_handler(self, method, func):
         self._invoke_handlers[method].append(func)
 
     def close(self):
