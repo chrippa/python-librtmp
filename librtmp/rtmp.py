@@ -62,8 +62,9 @@ class RTMP(object):
 
         librtmp.RTMP_Init(self.rtmp)
 
-        self._options = {}
-        self._invoke_handlers = defaultdict(list)
+        self._options = dict()
+        self._invoke_args = dict()
+        self._invoke_handlers = dict()
         self._invoke_results = dict()
         self._connect_result = None
 
@@ -198,6 +199,10 @@ class RTMP(object):
 
         Raises :exc:`RTMPError` if a stream could not be created.
 
+        Usage::
+
+          >>> stream = conn.create_stream()
+          >>> data = stream.read(1024)
         """
 
         if writeable:
@@ -221,7 +226,13 @@ class RTMP(object):
 
     @property
     def connected(self):
-        """Returns True if connected to the server."""
+        """Returns True if connected to the server.
+
+        Usage::
+
+          >>> conn.connected
+          True
+        """
 
         return bool(librtmp.RTMP_IsConnected(self.rtmp))
 
@@ -233,6 +244,11 @@ class RTMP(object):
         Raises :exc:`RTMPError` on error.
         Raises :exc:`RTMPTimeoutError` on timeout.
 
+        Usage::
+
+          >>> packet = conn.read_packet()
+          >>> packet.body
+          b'packet body ...'
         """
 
         packet = ffi.new("RTMPPacket*")
@@ -284,12 +300,20 @@ class RTMP(object):
         :param invoked_method: int, Wait until this method is invoked
                                by the server.
         :param timeout: int, The time to wait for a result from the server.
-                             Note: This the timeout used by this method only,
+                             Note: This is the timeout used by this method only,
                              the connection timeout is still used when reading
                              packets.
 
         Raises :exc:`RTMPError` on error.
         Raises :exc:`RTMPTimeoutError` on timeout.
+
+        Usage::
+
+          >>> @conn.invoke_handler
+          ... def add(x, y):
+          ...   return x + y
+
+          >>> @conn.process_packets()
 
         """
 
@@ -321,11 +345,16 @@ class RTMP(object):
 
                     self._invoke_results[transaction_id_] = result
                 else:
-                    for handler in self._invoke_handlers[method]:
-                        handler(*args)
+                    handler = self._invoke_handlers.get(method)
+                    if handler:
+                        res = handler(*args)
+                        if res is not None:
+                            self.call("_result", res,
+                                      transaction_id=transaction_id_)
 
                     if method == invoked_method:
-                        return args
+                        self._invoke_args[invoked_method] = args
+                        break
 
                 if transaction_id_ == 1.0:
                     self._connect_result = packet
@@ -334,18 +363,25 @@ class RTMP(object):
             else:
                 self.handle_packet(packet)
 
-        if transaction_id in self._invoke_results:
-            result = self._invoke_results[transaction_id]
-            del self._invoke_results[transaction_id]
+        if transaction_id:
+            result = self._invoke_results.pop(transaction_id, None)
 
             return result
+
+        if invoked_method:
+            args = self._invoke_args.pop(invoked_method, None)
+
+            return args
 
     def call(self, method, *args, **params):
         """Calls a method on the server."""
 
-        self.transaction_id += 1
+        transaction_id = params.get("transaction_id")
 
-        transaction_id = self.transaction_id
+        if not transaction_id:
+            self.transaction_id += 1
+            transaction_id = self.transaction_id
+
         obj = params.get("obj")
 
         args = [method, transaction_id, obj] + list(args)
@@ -396,7 +432,7 @@ class RTMP(object):
         return func
 
     def register_invoke_handler(self, method, func):
-        self._invoke_handlers[method].append(func)
+        self._invoke_handlers[method] = func
 
     def close(self):
         """Closes the connection to the server."""
