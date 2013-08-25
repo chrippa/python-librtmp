@@ -292,7 +292,7 @@ class RTMP(object):
         return librtmp.RTMP_ClientPacket(self.rtmp, packet.packet)
 
     def process_packets(self, transaction_id=None, invoked_method=None,
-                        timeout=30):
+                        timeout=None):
         """Wait for packets and process them as needed.
 
         :param transaction_id: int, Wait until the result of this
@@ -320,7 +320,7 @@ class RTMP(object):
         start = time()
 
         while self.connected and transaction_id not in self._invoke_results:
-            if (time() - start) >= timeout:
+            if timeout and (time() - start) >= timeout:
                 raise RTMPTimeoutError("Timeout")
 
             packet = self.read_packet()
@@ -464,7 +464,7 @@ class RTMPCall(object):
         self.done = False
         self.transaction_id = transaction_id
 
-    def result(self, timeout=30):
+    def result(self, timeout=None):
         """Retrieves the result of the call.
 
         :param timeout: The time to wait for a result from the server.
