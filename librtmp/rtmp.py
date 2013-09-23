@@ -425,8 +425,11 @@ class RTMP(object):
 
         return func
 
-    def invoke_handler(self, func):
-        method = func.__name__
+    def invoke_handler(self, func=None, name=None):
+        if not callable(func):
+            return lambda f: self.invoke_handler(func=f, name=func)
+
+        method = name or func.__name__
         self.register_invoke_handler(method, func)
 
         return func
