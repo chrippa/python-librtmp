@@ -46,7 +46,9 @@ Streaming
 ^^^^^^^^^
 
 The most common use case of RTMP is to read a video stream from
-a server::
+a server.
+
+.. code-block:: python
 
     import librtmp
 
@@ -65,12 +67,16 @@ Remote function calls
 ^^^^^^^^^^^^^^^^^^^^^
 
 Here is a example of creating a Python function that can be used to call
-remote functions::
+remote functions:
+
+.. code-block:: python
 
     my_remote_function = conn.remote_function("MyRemoteMethod", block=True)
     result = my_remote_function("some argument")
 
-Waiting for the server to call our function::
+Waiting for the server to call our function:
+
+.. code-block:: python
 
     # This will automatically name the function after it's Python name
     @conn.invoke_handler
@@ -80,12 +86,17 @@ Waiting for the server to call our function::
     # Start waiting for calls
     conn.process_packets()
 
-You can also use custom function name instead::
+You can also use custom function name instead:
+
+
+.. code-block:: python
 
     @conn.invoke_handler("MyMath.MyAdd")
 
 Instead of blocking forever when waiting for a call you can specify to wait
-only for a specific invoke and then stop blocking::
+only for a specific invoke and then stop blocking:
+
+.. code-block:: python
 
     conn.process_packets(invoked_method="MyMath.MyAdd", timeout=30)
 
