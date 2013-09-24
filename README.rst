@@ -27,7 +27,7 @@ The latest stable version is available to install using `pip <http://www.pip-ins
 
 .. code-block:: console
 
-    # pip install python-librtmp
+    # pip install cffi python-librtmp
 
 But you can also get the development version using `Git <http://git-scm.com/>`_:
 
@@ -35,9 +35,19 @@ But you can also get the development version using `Git <http://git-scm.com/>`_:
 
     $ git clone git://github.com/chrippa/python-librtmp.git
     $ cd python-librtmp
+    # pip install cffi
     # python setup.py install
 
-You will need a compiler and librtmp installed.
+
+Dependencies
+^^^^^^^^^^^^
+
+- a compiler, e.g `gcc`
+- librtmp: The library including it's headers (`librtmp-dev`)
+- cffi: The setup.py script currently depends on cffi being installed.
+  Therefore you need to install it before installing this library.
+  cffi also depends on libffi and it's headers (`libffi-dev`)
+
 
 Features
 --------
