@@ -3,3 +3,4 @@ include CONTRIBUTING.rst
 include HISTORY.rst
 include LICENSE
 include README.rst
+exclude librtmp_ffi/__pycache__/_binding.c
