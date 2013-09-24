@@ -1,22 +1,20 @@
 #!/usr/bin/env python
 
 try:
-    raise ImportError
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
 
 from sys import version_info
 
-# First attempt to generate extension source with cffi,
-# then fallback to already generated source.
 try:
     from librtmp_ffi.verifier import verifier
     extension = verifier.get_extension()
 except ImportError:
-    from distutils.extension import Extension
-    extension = Extension("_binding", ["librtmp_ffi/__pycache__/_binding.c"],
-                          libraries=["rtmp"])
+    import sys
+    sys.stderr.write("Error: CFFI (required for setup) is not available.\n")
+    sys.stderr.write("Please use 'pip install cffi', or equivalent.\n")
+    sys.exit(1)
 
 install_requires = ["cffi>=0.6"]
 
