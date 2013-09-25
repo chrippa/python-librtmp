@@ -27,7 +27,8 @@ The latest stable version is available to install using `pip <http://www.pip-ins
 
 .. code-block:: console
 
-    # pip install cffi python-librtmp
+    # pip install cffi
+    # pip install python-librtmp
 
 But you can also get the development version using `Git <http://git-scm.com/>`_:
 
