@@ -85,8 +85,6 @@ try:
         int RTMP_GetInvokeCount(RTMP *r);
         void RTMP_SetInvokeCount(RTMP *r, int count);
 
-        int vsprintf (char *dest, const char *fmt, va_list arg);
-
         typedef enum {
             AMF_NUMBER = 0, AMF_BOOLEAN, AMF_STRING, AMF_OBJECT,
             AMF_MOVIECLIP,      /* reserved, not used */
@@ -126,6 +124,8 @@ try:
         void AMFProp_GetObject(AMFObjectProperty * prop, AMFObject * obj);
         int AMFProp_IsValid(AMFObjectProperty * prop);
 
+        void (*python_log_callback)(int level, char *msg);
+        void *const c_log_callback;
     """)
 except Exception as err:
     raise ImportError("Unable to load librtmp: {0}".format(err))

@@ -1,5 +1,5 @@
 from librtmp_ffi.binding import librtmp
-from librtmp_ffi.ffi import C, ffi
+from librtmp_ffi.ffi import ffi
 
 from .utils import add_signal_handler
 
@@ -46,13 +46,9 @@ def remove_log_callback(callback):
     global _log_callbacks
     _log_callbacks.remove(callback)
 
-@ffi.callback("RTMP_LogCallback")
-def _log_callback(level, fmt, args):
-    buf = ffi.new("char[]", 2048)
-
-    C.vsprintf(buf, fmt, args)
-
-    msg = ffi.string(buf)
+@ffi.callback("void(int,char*)")
+def _log_callback(level, msg):
+    msg = ffi.string(msg)
     msg = msg.decode("utf8", "ignore")
 
     for callback in _log_callbacks:
@@ -61,6 +57,8 @@ def _log_callback(level, fmt, args):
     if hasattr(_log_output, "write") and level <= _log_level:
         _log_output.write(msg + "\n")
 
-librtmp.RTMP_LogSetCallback(_log_callback)
+librtmp.python_log_callback = _log_callback
+librtmp.RTMP_LogSetCallback(librtmp.c_log_callback)
+
 add_signal_handler()
 

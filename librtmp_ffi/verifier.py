@@ -28,6 +28,16 @@ preamble = """
         r->m_numInvokes = count;
     }
 
+    /* Logging */
+    #include <stdarg.h>
+
+    void (*python_log_callback)(int level, char *msg);
+    void c_log_callback(int level, const char *fmt, va_list args) {
+        char buf[2048];
+        vsprintf(buf, fmt, args);
+        python_log_callback(level, buf);
+    }
+
 """
 
 verifier = Verifier(ffi, preamble, libraries=["rtmp"],
