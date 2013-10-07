@@ -41,4 +41,5 @@ preamble = """
 """
 
 verifier = Verifier(ffi, preamble, libraries=["rtmp"],
-                    ext_package="librtmp_ffi", modulename="_binding")
+                    ext_package="librtmp_ffi", modulename="_binding",
+                    sources=["src/librtmp/amf.c"])
