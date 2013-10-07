@@ -3,4 +3,6 @@ include CONTRIBUTING.rst
 include HISTORY.rst
 include LICENSE
 include README.rst
+include src/librtmp/*.h
+include src/librtmp/*.c
 exclude librtmp_ffi/__pycache__/_binding.c
