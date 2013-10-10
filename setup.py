@@ -16,7 +16,7 @@ except ImportError:
     sys.stderr.write("Please use 'pip install cffi', or equivalent.\n")
     sys.exit(1)
 
-install_requires = ["cffi>=0.6"]
+install_requires = ["cffi>=0.6,<1.0"]
 
 if not (version_info[0] == 3 and version_info[1] > 4):
     install_requires.append("singledispatch")
