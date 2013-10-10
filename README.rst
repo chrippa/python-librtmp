@@ -82,8 +82,8 @@ remote functions:
 
 .. code-block:: python
 
-    my_remote_function = conn.remote_function("MyRemoteMethod", block=True)
-    result = my_remote_function("some argument")
+    my_remote_method = conn.remote_method("MyRemoteMethod", block=True)
+    result = my_remote_method("some argument")
 
 Waiting for the server to call our function:
 
