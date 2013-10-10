@@ -8,4 +8,5 @@ python:
 script: nosetests
 install:
  - sudo apt-get install librtmp0 librtmp-dev libffi-dev
- - pip install cffi
+ - pip install "cffi>=0.6,<1.0" --use-mirrors
+ - pip install . --use-mirrors
