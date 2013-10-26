@@ -50,6 +50,20 @@ Dependencies
   cffi also depends on libffi and it's headers (`libffi-dev`)
 
 
+Windows
+^^^^^^^
+
+If you're on Windows, you may not have a compiler easily available.
+
+You can find binaries of cffi at http://www.lfd.uci.edu/~gohlke/pythonlibs/#cffi. python-librtmp
+has wheel packages (binaries) available on PyPi, and can therefore be installed with
+`pip 1.4+ <http://www.pip-installer.org/>`_:
+
+.. code-block:: console
+
+    > pip install --use-wheel python-librtmp
+
+
 Features
 --------
 
