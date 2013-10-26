@@ -31,6 +31,10 @@
 #include "log.h"
 #include "bytes.h"
 
+#if _MSC_VER
+#define snprintf _snprintf
+#endif
+
 static const AMFObjectProperty AMFProp_Invalid = { {0, 0}, AMF_INVALID };
 static const AVal AV_empty = { 0, 0 };
 
