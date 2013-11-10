@@ -44,7 +44,7 @@ Dependencies
 ^^^^^^^^^^^^
 
 - a compiler, e.g `gcc`
-- librtmp: The library including it's headers (`librtmp-dev`)
+- librtmp: The library including it's headers (`librtmp-dev`). Only the official librtmp is supported, patched versions such as librtmp-ksv may not work.
 - cffi: The setup.py script currently depends on cffi being installed.
   Therefore you need to install it before installing this library.
   cffi also depends on libffi and it's headers (`libffi-dev`)
