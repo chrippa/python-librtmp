@@ -25,7 +25,7 @@ readme = open("README.rst").read()
 history = open("HISTORY.rst").read().replace(".. :changelog:", "")
 
 setup(name="python-librtmp",
-      version="0.1.2",
+      version="0.2.0",
       description="Python bindings for librtmp, built with cffi",
       long_description=readme + "\n\n" + history,
       author="Christopher Rosell",
@@ -48,5 +48,6 @@ setup(name="python-librtmp",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.3",
+        "Programming Language :: Python :: 3.4",
       ]
 )
