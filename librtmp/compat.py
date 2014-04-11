@@ -10,7 +10,7 @@ if is_py2:
     str = unicode
     range = xrange
 
-    byte_types = str
+    byte_types = _str
     integer_types = (int, long)
     string_types = (_str, unicode)
 
