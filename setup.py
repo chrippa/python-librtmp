@@ -18,7 +18,7 @@ except ImportError:
 
 install_requires = ["cffi>=0.6,<1.0"]
 
-if not (version_info[0] == 3 and version_info[1] > 4):
+if not (version_info[0] == 3 and version_info[1] >= 4):
     install_requires.append("singledispatch")
 
 readme = open("README.rst").read()
