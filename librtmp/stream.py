@@ -37,9 +37,13 @@ class RTMPStream(IOBase):
         return self._view[:res]
 
     def write(self, data):
-        """Write data to stream.
+        """Writes data to the stream.
 
-        :param data: bytes, Data to write to stream
+        :param data: bytes, FLV data to write to the stream
+
+        The data passed can contain multiple FLV tags, but it MUST
+        always contain complete tags or undefined behaviour might
+        occur.
 
         Raises :exc:`IOError` on error.
         """
