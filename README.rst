@@ -2,14 +2,15 @@
 python-librtmp
 ===============================
 
-.. image:: https://badge.fury.io/py/python-librtmp.png
-    :target: http://badge.fury.io/py/python-librtmp
+.. image:: http://img.shields.io/pypi/v/python-librtmp.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/python-librtmp
 
-.. image:: https://travis-ci.org/chrippa/python-librtmp.png?branch=master
-        :target: https://travis-ci.org/chrippa/python-librtmp
+.. image:: http://img.shields.io/pypi/dm/python-librtmp.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/python-librtmp
 
-.. image:: https://pypip.in/d/python-librtmp/badge.png
-        :target: https://crate.io/packages/python-librtmp?version=latest
+.. image:: http://img.shields.io/travis/chrippa/python-librtmp.svg?style=flat-square
+    :target: http://travis-ci.org/chrippa/python-librtmp
+
 
 
 python-librtmp is a Python interface to librtmp.
