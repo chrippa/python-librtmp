@@ -3,6 +3,13 @@
 History
 -------
 
+0.2.1 (2014-09-01)
+^^^^^^^^^^^^^^^^^^
+
+* Fixed expected bytes type on Python 2.
+* Fixed singledispatch dependency condition.
+
+
 0.2.0 (2014-04-07)
 ^^^^^^^^^^^^^^^^^^
 
