@@ -1,7 +1,7 @@
 """Python bindings for librtmp, built with cffi."""
 
 __title__ = "python-librtmp"
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 __license__ = "Simplified BSD"
 __author__ = "Christopher Rosell"
 __copyright__ = "Copyright 2013 Christopher Rosell"
