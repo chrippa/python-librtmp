@@ -12,4 +12,4 @@ __all__ = ["library_paths"]
 
 #: This is a list of filenames that python-librtmp
 #: will attempt to dynamically load `librtmp` from.
-library_paths = ["librtmp.so", "librtmp.so.0", "librtmp.dll", "librtmp.so.1", "librtmp.dylib"]
+library_paths = ["librtmp.so", "librtmp.so.0", "librtmp.dll", "librtmp.so.1", "librtmp.dylib", "cygrtmp-0.dll"]
