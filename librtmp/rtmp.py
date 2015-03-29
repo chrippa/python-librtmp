@@ -77,6 +77,9 @@ class RTMP(object):
             digest = unhexlify(swfhash)
             librtmp.RTMP_SetSWFHash(self.rtmp, digest, swfsize)
 
+        # Socks option must be set before setup_url.
+        set_opt("socks", socks)
+
         self.setup_url(url)
 
         set_opt("playpath", playpath)
@@ -92,7 +95,6 @@ class RTMP(object):
         set_opt("token", token)
         set_opt("jtv", jtv)
         set_opt("live", live)
-        set_opt("socks", socks)
 
         set_opt("start", start)
         set_opt("stop", stop)
