@@ -3,6 +3,13 @@
 History
 -------
 
+0.2.2 (2015-04-15)
+^^^^^^^^^^^^^^^^^^
+
+* Fixed proxy not being used by librtmp.
+* Added support for Cygwin, patch by @schrobby. (#17)
+
+
 0.2.1 (2014-09-01)
 ^^^^^^^^^^^^^^^^^^
 
