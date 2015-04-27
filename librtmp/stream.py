@@ -8,14 +8,17 @@ from .exceptions import RTMPError
 
 __all__ = ["RTMPStream"]
 
+
 class RTMPStream(IOBase):
     """A file-like interface to a stream within
        a RTMP session."""
 
-    def __init__(self, client):
+    def __init__(self, client, update_buffer=True):
         self.client = client
         self._buf = self._view = None
         self._closed = False
+        self._update_buffer = update_buffer
+        self._updated_buffer = False
 
     def read(self, size):
         """Attempts to read data from the stream.
@@ -24,6 +27,11 @@ class RTMPStream(IOBase):
 
         Raises :exc:`IOError` on error.
         """
+        # If enabled tell the server that our buffer can fit the whole
+        # stream, this often increases throughput alot.
+        if self._update_buffer and not self._updated_buffer and self.duration:
+            self.update_buffer((self.duration * 1000) + 5000)
+            self._updated_buffer = True
 
         if not self._buf or len(self._buf) != size:
             self._buf = ffi.new("char[]", size)
@@ -90,6 +98,11 @@ class RTMPStream(IOBase):
         if not self._closed:
             self._closed = True
             self.client.close()
+
+    def update_buffer(self, ms):
+        """Tells the server how big our buffer is (in milliseconds)."""
+        librtmp.RTMP_SetBufferMS(self.client.rtmp, int(ms))
+        librtmp.RTMP_UpdateBufferMS(self.client.rtmp)
 
     @property
     def duration(self):

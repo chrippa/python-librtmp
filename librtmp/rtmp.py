@@ -192,12 +192,15 @@ class RTMP(object):
 
         return RTMPCall(self, 1.0)
 
-    def create_stream(self, seek=None, writeable=False):
+    def create_stream(self, seek=None, writeable=False, update_buffer=True):
         """Prepares the session for streaming of audio/video
            and returns a :class:`RTMPStream` object.
 
         :param seek: int, Attempt to seek to this position.
         :param writeable: bool, Make the stream writeable instead of readable.
+        :param update_buffer: bool, When enabled will attempt to speed up
+                              download by telling the server our buffer can
+                              fit the whole stream.
 
         Raises :exc:`RTMPError` if a stream could not be created.
 
@@ -224,7 +227,7 @@ class RTMP(object):
         if res < 1:
             raise RTMPError("Failed to start RTMP playback")
 
-        return RTMPStream(self)
+        return RTMPStream(self, update_buffer=update_buffer)
 
     @property
     def connected(self):

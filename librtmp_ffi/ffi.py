@@ -56,6 +56,8 @@ try:
         int RTMP_Write(RTMP *r, const char *buf, int size);
         int RTMP_Pause(RTMP *r, int doPause);
         int RTMP_SendSeek(RTMP *r, int dTime);
+        void RTMP_SetBufferMS(RTMP *r, int size);
+        void RTMP_UpdateBufferMS(RTMP *r);
 
         int RTMP_LibVersion(void);
         int RTMP_SetOpt(RTMP *r, const AVal *opt, AVal *arg);

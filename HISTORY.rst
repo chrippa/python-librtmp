@@ -3,6 +3,14 @@
 History
 -------
 
+0.3.0 (Under development)
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Added update_buffer option (enabled by default) to RTMP.create_stream,
+  which enables a hack to increase throughput.
+* Added a update_buffer method to RTMPStream.
+
+
 0.2.2 (2015-04-15)
 ^^^^^^^^^^^^^^^^^^
 
