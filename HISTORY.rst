@@ -9,6 +9,7 @@ History
 * Added update_buffer option (enabled by default) to RTMP.create_stream,
   which enables a hack to increase throughput.
 * Added a update_buffer method to RTMPStream.
+* We now require at least version 1.0.1 of cffi.
 
 
 0.2.2 (2015-04-15)
