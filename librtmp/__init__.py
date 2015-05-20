@@ -1,17 +1,11 @@
 """Python bindings for librtmp, built with cffi."""
 
-__title__ = "python-librtmp"
-__version__ = "0.2.2"
-__license__ = "Simplified BSD"
-__author__ = "Christopher Rosell"
-__copyright__ = "Copyright 2013 Christopher Rosell"
-
 from .compat import is_win32
 
 if is_win32:
     import socket # Import socket to initialize WinSock
 
-from librtmp_ffi.binding import librtmp
+from ._librtmp import ffi, lib as librtmp
 
 librtmp_version = librtmp.RTMP_LibVersion()
 
@@ -24,4 +18,10 @@ from .packet import *
 from .rtmp import *
 from .stream import *
 from .utils import *
+
+__title__ = "python-librtmp"
+__version__ = "0.2.2"
+__license__ = "Simplified BSD"
+__author__ = "Christopher Rosell"
+__copyright__ = "Copyright 2013 Christopher Rosell"
 

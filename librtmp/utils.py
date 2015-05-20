@@ -1,14 +1,13 @@
-from librtmp_ffi.binding import librtmp
-from librtmp_ffi.ffi import ffi
-
 from binascii import hexlify
 from collections import namedtuple
 
+from . import ffi, librtmp
 from .aval import AVal
 from .compat import bytes, str
 from .exceptions import RTMPError
 
 __all__ = ["add_signal_handler", "hash_swf"]
+
 
 def add_signal_handler():
     """Adds a signal handler to handle KeyboardInterrupt."""
@@ -20,6 +19,7 @@ def add_signal_handler():
             raise KeyboardInterrupt
 
     signal.signal(signal.SIGINT, handler)
+
 
 def hash_swf(url, age=30):
     hash = ffi.new("unsigned char[]", 32)
@@ -39,6 +39,7 @@ def hash_swf(url, age=30):
 
 RTMPURL = namedtuple("RTMPURL", ["protocol", "hostname",
                      "port", "playpath", "app"])
+
 
 def parse_url(url):
     protocol = ffi.new("int*")

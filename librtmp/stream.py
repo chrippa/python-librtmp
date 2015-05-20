@@ -1,8 +1,6 @@
-from librtmp_ffi.binding import librtmp
-from librtmp_ffi.ffi import ffi
-
 from io import IOBase
 
+from . import ffi, librtmp
 from .compat import byte_types
 from .exceptions import RTMPError
 
@@ -108,4 +106,3 @@ class RTMPStream(IOBase):
     def duration(self):
         """The duration of the stream."""
         return librtmp.RTMP_GetDuration(self.client.rtmp)
-

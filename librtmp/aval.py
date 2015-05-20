@@ -1,7 +1,9 @@
+from . import ffi
 from .compat import bytes, integer_types, string_types
-from librtmp_ffi.ffi import ffi
+
 
 __all__ = ["AVal"]
+
 
 class AVal(object):
     def __init__(self, value=None):

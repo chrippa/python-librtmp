@@ -1,10 +1,7 @@
-from librtmp_ffi.binding import librtmp
-from librtmp_ffi.ffi import ffi
-
 from binascii import unhexlify
-from collections import defaultdict
 from time import time
 
+from . import ffi, librtmp
 from .aval import AVal
 from .amf import encode_amf, decode_amf, AMFError
 from .compat import bytes, string_types, integer_types
@@ -15,6 +12,7 @@ from .utils import hash_swf
 
 
 __all__ = ["RTMP", "RTMPCall"]
+
 
 class RTMP(object):
     """ A RTMP client session.
@@ -489,4 +487,3 @@ class RTMPCall(object):
         self.done = True
 
         return result
-

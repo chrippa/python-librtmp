@@ -1,11 +1,9 @@
-from librtmp_ffi.binding import librtmp
-from librtmp_ffi.ffi import ffi
-
 try:
     from functools import singledispatch
 except ImportError:
     from singledispatch import singledispatch
 
+from . import ffi, librtmp
 from .aval import AVal
 from .compat import is_py2, bytes, range
 from .exceptions import AMFError
@@ -15,8 +13,10 @@ AMF_OBJECT_DICT_TYPES = (librtmp.AMF_OBJECT, librtmp.AMF_ECMA_ARRAY)
 
 __all__ = ["AMFObject", "decode_amf", "encode_amf"]
 
+
 class AMFObject(dict):
     pass
+
 
 def _create_buffer(size):
     pbuf = ffi.new("char[]", size)
@@ -24,6 +24,7 @@ def _create_buffer(size):
     buf = ffi.buffer(pbuf, size)
 
     return pbuf, pend, buf
+
 
 def _encode_key_name(key):
     key = bytes(key, "utf8")
@@ -45,6 +46,7 @@ def encoder(val):
 @encoder.register(type(None))
 def _encode_none(val):
     return bytes((librtmp.AMF_NULL,))
+
 
 @encoder.register(str)
 def _encode_str(val):
@@ -96,11 +98,12 @@ def _encode_object(val):
 
     return head[:1] + bytes(body) + head[1:]
 
+
 @encoder.register(dict)
 def _encode_ecma_array(val):
     phead, headend, head = _create_buffer(8)
     head[0] = bytes((librtmp.AMF_ECMA_ARRAY,))
-    librtmp.AMF_EncodeInt32(phead + 1 , headend, len(val))
+    librtmp.AMF_EncodeInt32(phead + 1, headend, len(val))
     librtmp.AMF_EncodeInt24(phead + 5, headend, librtmp.AMF_OBJECT_END)
 
     body = bytearray()
@@ -154,6 +157,7 @@ def _decode_prop(prop):
 
     return val
 
+
 def _decode_prop_obj(prop):
     obj = ffi.new("AMFObject*")
     librtmp.AMFProp_GetObject(prop, obj)
@@ -174,6 +178,7 @@ def _decode_prop_obj(prop):
 
 def encode_amf(value):
     return encoder(value)
+
 
 def decode_amf(body):
     obj = ffi.new("AMFObject*")

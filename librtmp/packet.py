@@ -1,5 +1,4 @@
-from librtmp_ffi.binding import librtmp
-from librtmp_ffi.ffi import ffi
+from . import ffi, librtmp
 
 __all__ = ["RTMPPacket",
            "PACKET_SIZE_LARGE", "PACKET_SIZE_MEDIUM",
@@ -123,4 +122,3 @@ class RTMPPacket(object):
 
     def __del__(self):
         librtmp.RTMPPacket_Free(self.packet)
-
