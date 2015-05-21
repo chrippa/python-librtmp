@@ -7,5 +7,4 @@ python:
 script: nosetests
 install:
  - sudo apt-get install librtmp0 librtmp-dev libffi-dev
- - pip install "cffi>=0.6,<1.0"
  - pip install --no-use-wheel .
