@@ -45,6 +45,12 @@ But you can also get the development version using `Git <http://git-scm.com/>`_:
 .. _pip: http://pip-installer.org/
 .. _git: http://git-scm.com/
 
+.. note::
+
+    `cffi`_ 1.0 was released recently which contains significant changes. If you have
+    an old version already installed you will have to manually upgrade it or
+    you will get an error when attempting to install python-librtmp.
+
 
 Dependencies
 ------------
