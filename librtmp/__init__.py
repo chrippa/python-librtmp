@@ -20,8 +20,7 @@ from .stream import *
 from .utils import *
 
 __title__ = "python-librtmp"
-__version__ = "0.2.2"
+__version__ = "0.3.0"
 __license__ = "Simplified BSD"
 __author__ = "Christopher Rosell"
-__copyright__ = "Copyright 2013 Christopher Rosell"
-
+__copyright__ = "Copyright 2013-2015 Christopher Rosell"

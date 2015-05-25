@@ -1,6 +1,5 @@
-===============================
 python-librtmp
-===============================
+==============
 
 .. image:: http://img.shields.io/pypi/v/python-librtmp.svg?style=flat-square
     :target: https://pypi.python.org/pypi/python-librtmp
@@ -12,62 +11,75 @@ python-librtmp
     :target: http://travis-ci.org/chrippa/python-librtmp
 
 
+python-librtmp is a `RTMP`_ client library. It uses the implementation
+provided by `librtmp`_ via `cffi`_.
 
-python-librtmp is a Python interface to librtmp.
-It uses `cffi <http://cffi.readthedocs.org/>`_ to interface with
-the C library `librtmp <http://rtmpdump.mplayerhq.hu/librtmp.3.html>`_.
-
-* Free software: BSD license
+* Free software: `BSD license`_
 * Documentation: http://pythonhosted.org/python-librtmp
 
 
-Installation
-------------
+.. _RTMP: http://en.wikipedia.org/wiki/Real_Time_Messaging_Protocol
+.. _cffi: http://cffi.readthedocs.org/
+.. _librtmp: http://rtmpdump.mplayerhq.hu/librtmp.3.html
+.. _BSD license: http://opensource.org/licenses/BSD-2-Clause
 
-The latest stable version is available to install using `pip <http://www.pip-installer.org/>`_:
+
+Installation
+============
+
+The latest stable version is available to install using `pip`_
 
 .. code-block:: console
 
-    # pip install cffi
-    # pip install python-librtmp
+    sudo pip install python-librtmp
 
 But you can also get the development version using `Git <http://git-scm.com/>`_:
 
 .. code-block:: console
 
-    $ git clone git://github.com/chrippa/python-librtmp.git
-    $ cd python-librtmp
-    # pip install cffi
-    # python setup.py install
+    git clone git://github.com/chrippa/python-librtmp.git
+    cd python-librtmp
+    sudo python setup.py install
+
+
+.. _pip: http://pip-installer.org/
+.. _git: http://git-scm.com/
 
 
 Dependencies
-^^^^^^^^^^^^
+------------
 
-- a compiler, e.g `gcc`
-- librtmp: The library including it's headers (`librtmp-dev`). Only the official librtmp is supported, patched versions such as librtmp-ksv may not work.
-- cffi: The setup.py script currently depends on cffi being installed.
-  Therefore you need to install it before installing this library.
-  cffi also depends on libffi and it's headers (`libffi-dev`)
+- `Python`_, at least version 2.6 or 3.3.
+- a C compiler capapable of building `Python`_ extensions, e.g. `gcc`_
+- `librtmp`_: The library including its headers (`librtmp-dev` or equivalent)
+- `cffi`_: cffi depends on libffi and its headers (`libffi-dev` or equivalent)
+- On Python <3.4 the backport of `singledispatch`_ is also required.
+
+.. _gcc: https://gcc.gnu.org/
+.. _python: http://python.org/
+.. _singledispatch: https://pypi.python.org/pypi/singledispatch
 
 
 Windows
-^^^^^^^
+-------
 
-python-librtmp (and cffi) has wheel packages (binaries) available on PyPi and can
+python-librtmp (and `cffi`_) has wheel packages (binaries) available on PyPi and can
 therefore be easily installed with `pip 1.4+ <http://www.pip-installer.org/>`_
 without the need to compile anything:
 
 .. code-block:: console
 
+    > pip install python-librtmp
+
+    (on older pip versions you need to use --use-wheel)
     > pip install --use-wheel python-librtmp
 
 
 Features
---------
+========
 
 Streaming
-^^^^^^^^^
+---------
 
 The most common use case of RTMP is to read a video stream from
 a server.
@@ -86,9 +98,8 @@ a server.
     data = stream.read(1024)
 
 
-
 Remote function calls
-^^^^^^^^^^^^^^^^^^^^^
+---------------------
 
 Here is a example of creating a Python function that can be used to call
 remote functions:
@@ -111,7 +122,6 @@ Waiting for the server to call our function:
     conn.process_packets()
 
 You can also use custom function name instead:
-
 
 .. code-block:: python
 

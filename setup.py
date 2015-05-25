@@ -13,7 +13,7 @@ history = open("HISTORY.rst").read().replace(".. :changelog:", "")
 
 setup(
     name="python-librtmp",
-    version="0.2.2",
+    version="0.3.0",
     description="Python bindings for librtmp, built with cffi",
     long_description=readme + "\n\n" + history,
     author="Christopher Rosell",
