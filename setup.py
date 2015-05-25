@@ -27,7 +27,7 @@ setup(
     zip_safe=False,
     keywords="python-librtmp",
     classifiers=[
-        "Development Status :: 2 - Beta",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Natural Language :: English",
