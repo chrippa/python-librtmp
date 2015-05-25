@@ -3,5 +3,6 @@ include CONTRIBUTING.rst
 include HISTORY.rst
 include LICENSE
 include README.rst
-include src/librtmp/*.h
-include src/librtmp/*.c
+include tox.ini
+recursive-include tests *.py
+recursive-include src *.c *.h
