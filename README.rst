@@ -81,6 +81,12 @@ without the need to compile anything:
     > pip install --use-wheel python-librtmp
 
 
+OS X
+----
+librtmp can be installed using Homebrew as part of the rtmpdump package. See http://brew.sh/ for new braumeisters.
+    > brew install rtmpdump
+
+
 Features
 ========
 
