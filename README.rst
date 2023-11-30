@@ -56,7 +56,7 @@ Dependencies
 ------------
 
 - `Python`_, at least version 2.6 or 3.3.
-- a C compiler capapable of building `Python`_ extensions, e.g. `gcc`_
+- a C compiler capable of building `Python`_ extensions, e.g. `gcc`_
 - `librtmp`_: The library including its headers (`librtmp-dev` or equivalent)
 - `cffi`_: cffi depends on libffi and its headers (`libffi-dev` or equivalent)
 - On Python <3.4 the backport of `singledispatch`_ is also required.
